@@ -192,9 +192,20 @@ export default function PalestineFrame() {
 
       <button
         onClick={handleDownload}
-        style={buttonStyle}
-        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#15803d")}
-        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#16a34a")}
+        disabled={!name || !croppedPhoto} // <-- disable if name or photo is missing
+        style={{
+          ...buttonStyle,
+          backgroundColor: !name || !croppedPhoto ? "#94a3b8" : "#16a34a", // gray if disabled
+          cursor: !name || !croppedPhoto ? "not-allowed" : "pointer",
+        }}
+        onMouseOver={(e) => {
+          if (name && croppedPhoto)
+            e.currentTarget.style.backgroundColor = "#15803d";
+        }}
+        onMouseOut={(e) => {
+          if (name && croppedPhoto)
+            e.currentTarget.style.backgroundColor = "#16a34a";
+        }}
       >
         Download Poster
       </button>
@@ -223,12 +234,7 @@ export default function PalestineFrame() {
               onChange={(e) => setZoom(Number(e.target.value))}
               style={zoomSliderStyle}
             />
-            <button
-              onClick={createCroppedImage}
-              style={{ ...buttonStyle, marginTop: "16px", width: "100%" }}
-            >
-              Apply Crop
-            </button>
+            <button onClick={createCroppedImage}>Apply Crop</button>
           </div>
         </div>
       )}
