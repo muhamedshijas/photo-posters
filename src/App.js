@@ -227,7 +227,7 @@ export default function PalestineFrame() {
               onClick={createCroppedImage}
               style={{ ...buttonStyle, marginTop: "16px", width: "100%" }}
             >
-              Apply  Crop
+              Apply Crop
             </button>
           </div>
         </div>
