@@ -14,9 +14,10 @@ export default function PalestineFrame() {
 
   const posterImages = {
     plusTwo: "/posters/plusTwo.png",
-    sslc:"/posters/plusTwo.png",
-    lss:"/posters/lss.png"
-
+    plusTwofive:"/posters/plusTwoa.png",
+    lss:"/posters/lss.png",
+    uss:"/posters/uss.png",
+    nmms:"/posters/nmms.png"
   };
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -92,9 +93,12 @@ export default function PalestineFrame() {
         style={styles.input}
       >
         <option value="">Choose Certificate</option>
-        <option value="sslc">SSLC</option>
         <option value="plusTwo">Plus Two</option>
+        <option value="sslc">sslc</option>
+        <option value="plusTwofive">PLUS TWO 5 A+</option>
         <option value="lss">LSS</option>
+        <option value="uss">USS</option>
+        <option value="nmms">NMMS</option>
       </select>
       <div ref={posterRef} style={styles.poster}>
         {/* Background Frame */}
