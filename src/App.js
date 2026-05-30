@@ -13,9 +13,7 @@ export default function PalestineFrame() {
   const [certificateType, setCertificateType] = useState("sslc");
 
   const posterImages = {
-    sslc: "/posters/sslc.jpeg",
-    plusTwo: "/posters/plusTwo.jpg",
-    lss: "/posters/lss.jpeg",
+    plusTwo: "/posters/plusTwo.png",
   };
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
