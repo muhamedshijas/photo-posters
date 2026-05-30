@@ -17,7 +17,9 @@ export default function PalestineFrame() {
     plusTwofive:"/posters/plusTwoa.png",
     lss:"/posters/lss.png",
     uss:"/posters/uss.png",
-    nmms:"/posters/nmms.png"
+    nmms:"/posters/nmms.png",
+    sslc:"/posters/sslcfull.png",
+    sslcnine:"/posters/sslcnine.png"
   };
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -32,7 +34,7 @@ export default function PalestineFrame() {
       setPhoto(URL.createObjectURL(file));
       setShowModal(true);
     }
-  };
+  }; 
 
   const onCropComplete = (_, croppedPixels) => {
     setCroppedAreaPixels(croppedPixels);
@@ -93,12 +95,10 @@ export default function PalestineFrame() {
         style={styles.input}
       >
         <option value="">Choose Certificate</option>
-        <option value="plusTwo">Plus Two</option>
-        <option value="sslc">sslc</option>
-        <option value="plusTwofive">PLUS TWO 5 A+</option>
-        <option value="lss">LSS</option>
-        <option value="uss">USS</option>
-        <option value="nmms">NMMS</option>
+       
+        <option value="sslc">SSLC 10 A+</option>
+        <option value="sslcnine">SSLC 9 A+ </option>
+      
       </select>
       <div ref={posterRef} style={styles.poster}>
         {/* Background Frame */}
@@ -190,7 +190,7 @@ export default function PalestineFrame() {
                 image={photo}
                 crop={crop}
                 zoom={zoom}
-                aspect={112 / 135}
+                aspect={120 / 120}
                 showGrid={false}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
@@ -245,20 +245,20 @@ const styles = {
 
   userPhoto: {
     position: "absolute",
-    top: "90px",
-    left: "70px",
-    width: "112px",
-    height: "135px",
-
-    borderRadius: "9px",
+    top: "95px",
+    left: "60px",
+    width: "120px",
+    height: "120px",
+    borderRadius: "50%",
     objectFit: "cover",
     zIndex: 2,
+    border:"2px solid white"
   },
 
   nameContainer: {
     position: "absolute",
     top: "230px", // Moved slightly up to give the second line breathing room
-    left: "70px", // Aligns the text container to the left side of the poster
+    left: "48px", // Aligns the text container to the left side of the poster
     textAlign: "left", // Keeps text cleanly left-aligned
     fontSize: "18px", // Slightly smaller base font to prevent heavy overlapping
     fontWeight: "700",
@@ -271,7 +271,7 @@ const styles = {
   fatherNameContainer: {
     position: "absolute",
     top: "250px",
-    left: "70px",
+    left: "48px",
     textAlign: "left",
     fontSize: "12px",
     fontWeight: "600",
