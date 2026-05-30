@@ -9,11 +9,17 @@ export default function PalestineFrame() {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [fatherName, setFatherName] = useState("");
+  const [certificateType, setCertificateType] = useState("sslc");
+
+  const posterImages = {
+    sslc: "/posters/sslc.jpeg",
+    plusTwo: "/posters/plusTwo.jpg",
+    lss: "/posters/lss.jpeg",
+  };
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
 
-  
   const posterRef = useRef();
 
   const handleImageUpload = (e) => {
@@ -78,10 +84,20 @@ export default function PalestineFrame() {
 
   return (
     <div style={styles.container}>
+      <select
+        value={certificateType}
+        onChange={(e) => setCertificateType(e.target.value)}
+        style={styles.input}
+      >
+        <option value="">Choose Certificate</option>
+        <option value="sslc">SSLC</option>
+        <option value="plusTwo">Plus Two</option>
+        <option value="lss">LSS</option>
+      </select>
       <div ref={posterRef} style={styles.poster}>
         {/* Background Frame */}
         <img
-          src="/msf.jpeg"
+          src={posterImages[certificateType] || "/posters/sslc.jpg"}
           alt="Poster Background"
           style={styles.background}
           crossOrigin="anonymous"
@@ -95,10 +111,11 @@ export default function PalestineFrame() {
         {/* User Name */}
         <div style={styles.nameContainer}>{name.toUpperCase()}</div>
 
-      <div style={styles.fatherNameContainer}>   D/O {fatherName.toUpperCase()}</div>
+        <div style={styles.fatherNameContainer}>
+          {" "}
+          {fatherName.toUpperCase()}
+        </div>
       </div>
-
-      <select></select>
 
       <input
         type="file"
@@ -198,8 +215,9 @@ const styles = {
     position: "absolute",
     top: "90px",
     left: "70px",
-    width: "115px",
-    height: "135px",
+    width: "112px",
+    height: "130px",
+
     borderRadius: "10px",
     objectFit: "cover",
     zIndex: 2,
@@ -207,7 +225,7 @@ const styles = {
 
   nameContainer: {
     position: "absolute",
-    top: "225px", // Moved slightly up to give the second line breathing room
+    top: "223px", // Moved slightly up to give the second line breathing room
     left: "70px", // Aligns the text container to the left side of the poster
     textAlign: "left", // Keeps text cleanly left-aligned
     fontSize: "18px", // Slightly smaller base font to prevent heavy overlapping
