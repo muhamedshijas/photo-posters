@@ -14,7 +14,8 @@ export default function PalestineFrame() {
 
   const posterImages = {
     plusTwo: "/posters/plusTwo.png",
-    sslc:"/posters/plusTwo.png"
+    sslc:"/posters/plusTwo.png",
+    lss:"/posters/lss.png"
 
   };
 
@@ -252,7 +253,7 @@ const styles = {
 
   nameContainer: {
     position: "absolute",
-    top: "223px", // Moved slightly up to give the second line breathing room
+    top: "230px", // Moved slightly up to give the second line breathing room
     left: "70px", // Aligns the text container to the left side of the poster
     textAlign: "left", // Keeps text cleanly left-aligned
     fontSize: "18px", // Slightly smaller base font to prevent heavy overlapping
@@ -265,7 +266,7 @@ const styles = {
   },
   fatherNameContainer: {
     position: "absolute",
-    top: "240px",
+    top: "250px",
     left: "70px",
     textAlign: "left",
     fontSize: "12px",
