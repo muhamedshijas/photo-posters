@@ -14,6 +14,8 @@ export default function PalestineFrame() {
 
   const posterImages = {
     plusTwo: "/posters/plusTwo.png",
+    sslc:"/posters/plusTwo.png"
+
   };
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
