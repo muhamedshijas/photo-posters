@@ -8,8 +8,8 @@ export default function PalestineFrame() {
   const [croppedPhoto, setCroppedPhoto] = useState(null);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [fatherName, setFatherName] = useState("");
 
-  // crop controls
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
 
@@ -17,6 +17,7 @@ export default function PalestineFrame() {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
+
     if (file) {
       setPhoto(URL.createObjectURL(file));
       setShowModal(true);
@@ -32,11 +33,15 @@ export default function PalestineFrame() {
 
     const image = new Image();
     image.src = photo;
-    await new Promise((resolve) => (image.onload = resolve));
+
+    await new Promise((resolve) => {
+      image.onload = resolve;
+    });
 
     const canvas = document.createElement("canvas");
     canvas.width = croppedAreaPixels.width;
     canvas.height = croppedAreaPixels.height;
+
     const ctx = canvas.getContext("2d");
 
     ctx.drawImage(
@@ -48,7 +53,7 @@ export default function PalestineFrame() {
       0,
       0,
       croppedAreaPixels.width,
-      croppedAreaPixels.height
+      croppedAreaPixels.height,
     );
 
     setCroppedPhoto(canvas.toDataURL("image/png"));
@@ -60,171 +65,89 @@ export default function PalestineFrame() {
 
     const canvas = await html2canvas(posterRef.current, {
       useCORS: true,
-      scale: 3, // sharper output
+      scale: 4,
       backgroundColor: null,
     });
 
     const link = document.createElement("a");
     link.download = `${name || "poster"}.png`;
-    link.href = canvas.toDataURL("image/png", 1.0);
+    link.href = canvas.toDataURL("image/png", 1);
     link.click();
   };
 
-  // CSS styles
-  const containerStyle = {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: "16px",
-    padding: "16px",
-  };
-  const posterStyle = {
-    position: "relative",
-    width: "400px",
-    height: "400px",
-    borderRadius: "8px",
-    overflow: "hidden",
-    boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-  };
-  const bgImageStyle = {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    top: 0,
-    left: 0,
-    zIndex: 0,
-  };
-  const uploadedPhotoStyle = {
-    position: "absolute",
-    width: "100px",
-    height: "100px",
-    top: "180px",
-    left: "150px",
-    objectFit: "cover",
-    borderRadius: "6px",
-    zIndex: 1,
-  };
-  const posterNameStyle = {
-    position: "absolute",
-    bottom: "85px",
-    left: "50%",
-    transform: "translateX(-50%)",
-    color: "white",
-    fontWeight: "bold",
-    fontSize: "15px",
-    zIndex: 2,
-  };
-  const inputStyle = {
-    border: "1px solid #ccc",
-    padding: "8px",
-    borderRadius: "4px",
-  };
-  const buttonStyle = {
-    marginTop: "8px",
-    padding: "8px 16px",
-    backgroundColor: "#16a34a",
-    color: "white",
-    border: "none",
-    borderRadius: "4px",
-    cursor: "pointer",
-  };
-  const modalStyle = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100vw",
-    height: "100vh",
-    backgroundColor: "rgba(0,0,0,0.6)",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    zIndex: 999,
-  };
-  const modalContentStyle = {
-    position: "relative",
-    width: "80%",
-    maxWidth: "400px",
-    height: "400px",
-    backgroundColor: "white",
-    padding: "16px",
-    borderRadius: "8px",
-  };
-  const cropperContainerStyle = {
-    position: "relative",
-    width: "100%",
-    height: "300px",
-    background: "#333",
-  };
-  const zoomSliderStyle = { width: "100%", marginTop: "8px" };
-
   return (
-    <div style={containerStyle}>
-      <div ref={posterRef} style={posterStyle}>
-        {/* ✅ Use <img> for high-quality background */}
+    <div style={styles.container}>
+      <div ref={posterRef} style={styles.poster}>
+        {/* Background Frame */}
         <img
-          src="/posterbg.jpg"
-          alt="Background"
-          style={bgImageStyle}
+          src="/msf.jpeg"
+          alt="Poster Background"
+          style={styles.background}
           crossOrigin="anonymous"
         />
 
+        {/* User Photo */}
         {croppedPhoto && (
-          <img src={croppedPhoto} alt="Uploaded" style={uploadedPhotoStyle} />
+          <img src={croppedPhoto} alt="User" style={styles.userPhoto} />
         )}
 
-        <h2 style={posterNameStyle}>{name.toUpperCase()}</h2>
+        {/* User Name */}
+        <div style={styles.nameContainer}>{name.toUpperCase()}</div>
+
+      <div style={styles.fatherNameContainer}>   D/O {fatherName.toUpperCase()}</div>
       </div>
+
+      <select></select>
 
       <input
         type="file"
         accept="image/*"
         onChange={handleImageUpload}
-        style={inputStyle}
+        style={styles.input}
+      />
+
+      <input
+        type="text"
+        placeholder="Enter Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        style={styles.input}
       />
       <input
         type="text"
-        placeholder="Enter your name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        style={{ ...inputStyle, marginTop: "8px" }}
+        placeholder="Enter Father Name"
+        value={fatherName}
+        onChange={(e) => setFatherName(e.target.value)}
+        style={styles.input}
       />
 
       <button
         onClick={handleDownload}
-        disabled={!name || !croppedPhoto} // <-- disable if name or photo is missing
+        disabled={!name || !croppedPhoto}
         style={{
-          ...buttonStyle,
-          backgroundColor: !name || !croppedPhoto ? "green" : "#16a34a", // gray if disabled
-          cursor: !name || !croppedPhoto ? "not-allowed" : "pointer",
-        }}
-        onMouseOver={(e) => {
-          if (name && croppedPhoto)
-            e.currentTarget.style.backgroundColor = "#15803d";
-        }}
-        onMouseOut={(e) => {
-          if (name && croppedPhoto)
-            e.currentTarget.style.backgroundColor = "#16a34a";
+          ...styles.button,
+          opacity: !name || !croppedPhoto ? 0.6 : 1,
         }}
       >
         Download Poster
       </button>
 
       {showModal && (
-        <div style={modalStyle}>
-          <div style={modalContentStyle}>
-            <div style={cropperContainerStyle}>
+        <div style={styles.modal}>
+          <div style={styles.modalContent}>
+            <div style={styles.cropContainer}>
               <Cropper
                 image={photo}
                 crop={crop}
                 zoom={zoom}
                 aspect={1}
+                showGrid={false}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
                 onCropComplete={onCropComplete}
               />
             </div>
-            {/* Zoom slider */}
+
             <input
               type="range"
               min={1}
@@ -232,12 +155,116 @@ export default function PalestineFrame() {
               step={0.01}
               value={zoom}
               onChange={(e) => setZoom(Number(e.target.value))}
-              style={zoomSliderStyle}
+              style={{ width: "100%" }}
             />
-            <button onClick={createCroppedImage}>Apply Crop</button>
+
+            <button onClick={createCroppedImage} style={styles.button}>
+              Apply Crop
+            </button>
           </div>
         </div>
       )}
     </div>
   );
 }
+
+const styles = {
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "15px",
+    padding: "20px",
+  },
+
+  poster: {
+    position: "relative",
+    width: "450px",
+    height: "650px",
+    overflow: "hidden",
+  },
+
+  background: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+    top: 0,
+    left: 0,
+  },
+
+  userPhoto: {
+    position: "absolute",
+    top: "90px",
+    left: "70px",
+    width: "110px",
+    height: "135px",
+    borderRadius: "10px",
+    objectFit: "cover",
+    zIndex: 2,
+  },
+
+  nameContainer: {
+    position: "absolute",
+    top: "225px", // Moved slightly up to give the second line breathing room
+    left: "78px", // Aligns the text container to the left side of the poster
+    textAlign: "left", // Keeps text cleanly left-aligned
+    fontSize: "18px", // Slightly smaller base font to prevent heavy overlapping
+    fontWeight: "700",
+    color: "#000",
+    lineHeight: "22px", // Tightened line spacing so line 2 stays as high up as possible
+    wordBreak: "break-word",
+    whiteSpace: "normal",
+    zIndex: 3,
+  },
+  fatherNameContainer: {
+    position: "absolute",
+    top: "240px",
+    left: "78px",
+    width: "200px",
+    textAlign: "left",
+    fontSize: "12px",
+    fontWeight: "600",
+    color: "#525252",
+    lineHeight: "20px",
+    wordBreak: "break-word",
+    whiteSpace: "normal",
+    zIndex: 3,
+  },
+  input: {
+    padding: "10px",
+    width: "250px",
+  },
+
+  button: {
+    padding: "10px 20px",
+    border: "none",
+    borderRadius: "5px",
+    background: "#16a34a",
+    color: "#fff",
+    cursor: "pointer",
+  },
+
+  modal: {
+    position: "fixed",
+    inset: 0,
+    background: "rgba(0,0,0,0.7)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 999,
+  },
+
+  modalContent: {
+    background: "#fff",
+    padding: "20px",
+    borderRadius: "10px",
+    width: "400px",
+  },
+
+  cropContainer: {
+    position: "relative",
+    width: "100%",
+    height: "300px",
+  },
+};
