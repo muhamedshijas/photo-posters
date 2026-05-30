@@ -13,6 +13,7 @@ export default function PalestineFrame() {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
 
+  
   const posterRef = useRef();
 
   const handleImageUpload = (e) => {
@@ -140,7 +141,7 @@ export default function PalestineFrame() {
                 image={photo}
                 crop={crop}
                 zoom={zoom}
-                aspect={1}
+                aspect={110 / 135}
                 showGrid={false}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
@@ -197,7 +198,7 @@ const styles = {
     position: "absolute",
     top: "90px",
     left: "70px",
-    width: "110px",
+    width: "115px",
     height: "135px",
     borderRadius: "10px",
     objectFit: "cover",
@@ -207,7 +208,7 @@ const styles = {
   nameContainer: {
     position: "absolute",
     top: "225px", // Moved slightly up to give the second line breathing room
-    left: "78px", // Aligns the text container to the left side of the poster
+    left: "70px", // Aligns the text container to the left side of the poster
     textAlign: "left", // Keeps text cleanly left-aligned
     fontSize: "18px", // Slightly smaller base font to prevent heavy overlapping
     fontWeight: "700",
@@ -220,7 +221,7 @@ const styles = {
   fatherNameContainer: {
     position: "absolute",
     top: "240px",
-    left: "78px",
+    left: "70px",
     width: "200px",
     textAlign: "left",
     fontSize: "12px",
