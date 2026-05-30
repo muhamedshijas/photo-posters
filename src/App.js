@@ -222,7 +222,6 @@ const styles = {
     position: "absolute",
     top: "240px",
     left: "70px",
-    width: "200px",
     textAlign: "left",
     fontSize: "12px",
     fontWeight: "600",
