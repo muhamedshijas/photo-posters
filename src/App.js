@@ -195,7 +195,7 @@ export default function PalestineFrame() {
         disabled={!name || !croppedPhoto} // <-- disable if name or photo is missing
         style={{
           ...buttonStyle,
-          backgroundColor: !name || !croppedPhoto ? "#94a3b8" : "#16a34a", // gray if disabled
+          backgroundColor: !name || !croppedPhoto ? "green" : "#16a34a", // gray if disabled
           cursor: !name || !croppedPhoto ? "not-allowed" : "pointer",
         }}
         onMouseOver={(e) => {
