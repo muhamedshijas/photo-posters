@@ -158,7 +158,7 @@ export default function PalestineFrame() {
                 image={photo}
                 crop={crop}
                 zoom={zoom}
-                aspect={110 / 135}
+                aspect={112 / 135}
                 showGrid={false}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
@@ -216,9 +216,9 @@ const styles = {
     top: "90px",
     left: "70px",
     width: "112px",
-    height: "130px",
+    height: "135px",
 
-    borderRadius: "10px",
+    borderRadius: "9px",
     objectFit: "cover",
     zIndex: 2,
   },
