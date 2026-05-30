@@ -9,6 +9,7 @@ export default function PalestineFrame() {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [fatherName, setFatherName] = useState("");
+  const [gender, setGender] = useState("male");
   const [certificateType, setCertificateType] = useState("sslc");
 
   const posterImages = {
@@ -112,8 +113,7 @@ export default function PalestineFrame() {
         <div style={styles.nameContainer}>{name.toUpperCase()}</div>
 
         <div style={styles.fatherNameContainer}>
-          {" "}
-          {fatherName.toUpperCase()}
+          {gender === "male" ? "S/O" : "D/O"} {fatherName.toUpperCase()}
         </div>
       </div>
 
@@ -131,6 +131,33 @@ export default function PalestineFrame() {
         onChange={(e) => setName(e.target.value)}
         style={styles.input}
       />
+      <div
+        style={{
+          display: "flex",
+          gap: "20px",
+          alignItems: "center",
+        }}
+      >
+        <label>
+          <input
+            type="radio"
+            value="male"
+            checked={gender === "male"}
+            onChange={(e) => setGender(e.target.value)}
+          />
+          Male
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            value="female"
+            checked={gender === "female"}
+            onChange={(e) => setGender(e.target.value)}
+          />
+          Female
+        </label>
+      </div>
       <input
         type="text"
         placeholder="Enter Father Name"
