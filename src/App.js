@@ -3,22 +3,18 @@ import html2canvas from "html2canvas";
 import Cropper from "react-easy-crop";
 
 export default function PalestineFrame() {
-  const [name, setName] = useState("");
   const [photo, setPhoto] = useState(null);
   const [croppedPhoto, setCroppedPhoto] = useState(null);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [fatherName, setFatherName] = useState("");
-  const [gender, setGender] = useState("male");
-  const [certificateType, setCertificateType] = useState("sslc");
 
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
 
-  const posterRef = useRef();
+  const posterRef = useRef(null);
 
   const handleImageUpload = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files?.[0];
 
     if (file) {
       setPhoto(URL.createObjectURL(file));
@@ -34,6 +30,7 @@ export default function PalestineFrame() {
     if (!photo || !croppedAreaPixels) return;
 
     const image = new Image();
+    image.crossOrigin = "anonymous";
     image.src = photo;
 
     await new Promise((resolve) => {
@@ -65,49 +62,60 @@ export default function PalestineFrame() {
   const handleDownload = async () => {
     if (!posterRef.current) return;
 
+    const images = posterRef.current.querySelectorAll("img");
+
+    await Promise.all(
+      [...images].map((img) => {
+        if (img.complete) return Promise.resolve();
+
+        return new Promise((resolve) => {
+          img.onload = resolve;
+          img.onerror = resolve;
+        });
+      }),
+    );
+
     const canvas = await html2canvas(posterRef.current, {
       useCORS: true,
       scale: 4,
       backgroundColor: null,
+      imageTimeout: 0,
+      logging: false,
     });
 
     const link = document.createElement("a");
-    link.download = `${name || "poster"}.png`;
-    link.href = canvas.toDataURL("image/png", 1);
+    link.download = "poster.png";
+    link.href = canvas.toDataURL("image/png", 1.0);
     link.click();
   };
 
   return (
     <div style={styles.container}>
-      <select
-        value={certificateType}
-        onChange={(e) => setCertificateType(e.target.value)}
-        style={styles.input}
-      >
-        <option value="">Choose Certificate</option>
-
-        <option value="sslc">SSLC 10 A+</option>
-        <option value="sslcnine">SSLC 9 A+ </option>
-        <option value="cbse">CBSE </option>
-        <option value="lss">LSS</option>
-        <option value="lss">LSS</option>
-        <option value="lss">LSS</option>
-      </select>
       <div ref={posterRef} style={styles.poster}>
-        {/* Background Frame */}
+        {croppedPhoto && (
+          <img
+            src={croppedPhoto}
+            alt="User"
+            style={styles.userPhoto}
+            crossOrigin="anonymous"
+          />
+        )}
+
         <img
-          src="/posters/bg.jpg"
-          alt="Poster Background"
-          style={styles.background}
+          src="/posters/gala.png"
+          alt="Logo"
+          style={styles.galaImage}
           crossOrigin="anonymous"
         />
 
-        {/* User Photo */}
-        {croppedPhoto && (
-          <img src={croppedPhoto} alt="User" style={styles.userPhoto} />
-        )}
-
-        <img src="/posters/gala.png" alt="Overlay" style={styles.galaImage} />
+        <div style={styles.bottomBox}>
+          <img
+            src="/posters/msf.png"
+            alt="MSF"
+            style={styles.msfImage}
+            crossOrigin="anonymous"
+          />
+        </div>
       </div>
 
       <input
@@ -116,12 +124,13 @@ export default function PalestineFrame() {
         onChange={handleImageUpload}
         style={styles.input}
       />
+
       <button
         onClick={handleDownload}
-        disabled={!name || !croppedPhoto}
+        disabled={!croppedPhoto}
         style={{
           ...styles.button,
-          opacity: !name || !croppedPhoto ? 0.6 : 1,
+          opacity: !croppedPhoto ? 0.5 : 1,
         }}
       >
         Download Poster
@@ -135,7 +144,7 @@ export default function PalestineFrame() {
                 image={photo}
                 crop={crop}
                 zoom={zoom}
-                aspect={1080 / 530}
+                aspect={1080 / 566}
                 showGrid={false}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
@@ -150,10 +159,20 @@ export default function PalestineFrame() {
               step={0.01}
               value={zoom}
               onChange={(e) => setZoom(Number(e.target.value))}
-              style={{ width: "100%" }}
+              style={{
+                width: "100%",
+                marginTop: "15px",
+              }}
             />
 
-            <button onClick={createCroppedImage} style={styles.button}>
+            <button
+              onClick={createCroppedImage}
+              style={{
+                ...styles.button,
+                marginTop: "15px",
+                width: "100%",
+              }}
+            >
               Apply Crop
             </button>
           </div>
@@ -174,54 +193,67 @@ const styles = {
 
   poster: {
     position: "relative",
-    width: "1030px",
-    height: "560px",
+    width: "1080px",
+    height: "566px",
     overflow: "hidden",
-  },
-
-  background: {
-    position: "absolute",
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-    top: 0,
-    left: 0,
+    borderRadius: "10px",
   },
 
   userPhoto: {
     position: "absolute",
-
-    width: "1080px",
-    height: "530px",
-    borderRadius: "0px 0px 9px 9px ",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
     objectFit: "cover",
-    zIndex: 2,
+    zIndex: 1,
   },
 
+  msfImage: {
+    width: "350px",
+    height: "auto",
+    objectFit: "contain",
+  },
+
+  bottomBox: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    width: "100%",
+    height: "70px",
+    backgroundColor: "#ffffff",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 3,
+  },
   galaImage: {
     position: "absolute",
-    width:"100px",
-    height:"100px", 
+    width: "100px",
     top: "10px",
-    left: "20px",
-  
-    objectFit: "contain", // or "contain"
-    zIndex: 3,
+    left: "10px",
+    zIndex: 2,
+    display: "block",
+  },
+
+  input: {
+    padding: "10px",
   },
 
   button: {
     padding: "10px 20px",
     border: "none",
-    borderRadius: "5px",
+    borderRadius: "6px",
     background: "#16a34a",
     color: "#fff",
     cursor: "pointer",
+    fontSize: "16px",
   },
 
   modal: {
     position: "fixed",
     inset: 0,
-    background: "rgba(0,0,0,0.7)",
+    background: "rgba(0,0,0,0.75)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -231,13 +263,14 @@ const styles = {
   modalContent: {
     background: "#fff",
     padding: "20px",
-    borderRadius: "10px",
-    width: "400px",
+    borderRadius: "12px",
+    width: "450px",
+    maxWidth: "90%",
   },
 
   cropContainer: {
     position: "relative",
     width: "100%",
-    height: "300px",
+    height: "350px",
   },
 };
