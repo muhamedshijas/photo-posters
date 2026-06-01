@@ -201,7 +201,7 @@ const styles = {
   galaImage: {
     position: "absolute",
     width:"100px",
-    height:"100px",
+    height:"100px", 
     top: "10px",
     left: "20px",
   
