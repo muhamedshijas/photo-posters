@@ -151,7 +151,7 @@ export default function PalestineFrame() {
                 image={photo}
                 crop={crop}
                 zoom={zoom}
-                aspect={1080 / 566}
+                aspect={600 / 400}
                 showGrid={false}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
@@ -200,8 +200,8 @@ const styles = {
 
   poster: {
     position: "relative",
-    width: "1080px",
-    height: "566px",
+    width: "600px",
+    height: "400px",
     overflow: "hidden",
     borderRadius: "10px",
   },
@@ -236,7 +236,7 @@ const styles = {
   },
   galaImage: {
     position: "absolute",
-    width: "200px",
+    width: "150px",
     top: "20px",
     left: "10px",
     zIndex: 2,
@@ -244,7 +244,7 @@ const styles = {
   },
    medal: {
     position: "absolute",
-    width: "150px",
+    width: "100px",
     top: "-10px",
     right: "10px",
     zIndex: 2,
