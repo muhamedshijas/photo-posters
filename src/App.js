@@ -12,16 +12,6 @@ export default function PalestineFrame() {
   const [gender, setGender] = useState("male");
   const [certificateType, setCertificateType] = useState("sslc");
 
-  const posterImages = {
-    plusTwo: "/posters/plusTwo.png",
-    plusTwofive:"/posters/plusTwoa.png",
-    lss:"/posters/lss.png",
-    uss:"/posters/uss.png",
-    nmms:"/posters/nmms.png",
-    sslc:"/posters/sslcfull.png",
-    sslcnine:"/posters/sslcnine.png"
-  };
-
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
 
@@ -34,7 +24,7 @@ export default function PalestineFrame() {
       setPhoto(URL.createObjectURL(file));
       setShowModal(true);
     }
-  }; 
+  };
 
   const onCropComplete = (_, croppedPixels) => {
     setCroppedAreaPixels(croppedPixels);
@@ -95,15 +85,18 @@ export default function PalestineFrame() {
         style={styles.input}
       >
         <option value="">Choose Certificate</option>
-       
+
         <option value="sslc">SSLC 10 A+</option>
         <option value="sslcnine">SSLC 9 A+ </option>
-      
+        <option value="cbse">CBSE </option>
+        <option value="lss">LSS</option>
+        <option value="lss">LSS</option>
+        <option value="lss">LSS</option>
       </select>
       <div ref={posterRef} style={styles.poster}>
         {/* Background Frame */}
         <img
-          src={posterImages[certificateType] || "/posters/sslc.jpg"}
+          src="/posters/bg.jpg"
           alt="Poster Background"
           style={styles.background}
           crossOrigin="anonymous"
@@ -114,12 +107,7 @@ export default function PalestineFrame() {
           <img src={croppedPhoto} alt="User" style={styles.userPhoto} />
         )}
 
-        {/* User Name */}
-        <div style={styles.nameContainer}>{name.toUpperCase()}</div>
-
-        <div style={styles.fatherNameContainer}>
-          {gender === "male" ? "S/O" : "D/O"} {fatherName.toUpperCase()}
-        </div>
+        <img src="/posters/gala.png" alt="Overlay" style={styles.galaImage} />
       </div>
 
       <input
@@ -128,49 +116,6 @@ export default function PalestineFrame() {
         onChange={handleImageUpload}
         style={styles.input}
       />
-
-      <input
-        type="text"
-        placeholder="Enter Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        style={styles.input}
-      />
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          alignItems: "center",
-        }}
-      >
-        <label>
-          <input
-            type="radio"
-            value="male"
-            checked={gender === "male"}
-            onChange={(e) => setGender(e.target.value)}
-          />
-          Male
-        </label>
-
-        <label>
-          <input
-            type="radio"
-            value="female"
-            checked={gender === "female"}
-            onChange={(e) => setGender(e.target.value)}
-          />
-          Female
-        </label>
-      </div>
-      <input
-        type="text"
-        placeholder="Enter Father Name"
-        value={fatherName}
-        onChange={(e) => setFatherName(e.target.value)}
-        style={styles.input}
-      />
-
       <button
         onClick={handleDownload}
         disabled={!name || !croppedPhoto}
@@ -190,7 +135,7 @@ export default function PalestineFrame() {
                 image={photo}
                 crop={crop}
                 zoom={zoom}
-                aspect={120 / 120}
+                aspect={1080 / 530}
                 showGrid={false}
                 onCropChange={setCrop}
                 onZoomChange={setZoom}
@@ -229,8 +174,8 @@ const styles = {
 
   poster: {
     position: "relative",
-    width: "450px",
-    height: "650px",
+    width: "1030px",
+    height: "560px",
     overflow: "hidden",
   },
 
@@ -245,45 +190,23 @@ const styles = {
 
   userPhoto: {
     position: "absolute",
-    top: "95px",
-    left: "60px",
-    width: "120px",
-    height: "120px",
-    borderRadius: "50%",
+
+    width: "1080px",
+    height: "530px",
+    borderRadius: "0px 0px 9px 9px ",
     objectFit: "cover",
     zIndex: 2,
-    border:"2px solid white"
   },
 
-  nameContainer: {
+  galaImage: {
     position: "absolute",
-    top: "230px", // Moved slightly up to give the second line breathing room
-    left: "48px", // Aligns the text container to the left side of the poster
-    textAlign: "left", // Keeps text cleanly left-aligned
-    fontSize: "18px", // Slightly smaller base font to prevent heavy overlapping
-    fontWeight: "700",
-    color: "#000",
-    lineHeight: "22px", // Tightened line spacing so line 2 stays as high up as possible
-    wordBreak: "break-word",
-    whiteSpace: "normal",
+    width:"100px",
+    height:"100px",
+    top: "10px",
+    left: "20px",
+  
+    objectFit: "contain", // or "contain"
     zIndex: 3,
-  },
-  fatherNameContainer: {
-    position: "absolute",
-    top: "250px",
-    left: "48px",
-    textAlign: "left",
-    fontSize: "12px",
-    fontWeight: "600",
-    color: "#525252",
-    lineHeight: "20px",
-    wordBreak: "break-word",
-    whiteSpace: "normal",
-    zIndex: 3,
-  },
-  input: {
-    padding: "10px",
-    width: "250px",
   },
 
   button: {
