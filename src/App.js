@@ -101,11 +101,18 @@ export default function PalestineFrame() {
           />
         )}
 
+
         <img
-          src="/posters/gala.png"
-          alt="Logo"
-          style={styles.galaImage}
-          crossOrigin="anonymous"
+        src="/posters/gala.png"
+        alt="Logo"
+        style={styles.galaImage}
+        crossOrigin="anonymous"
+        />
+        <img
+        src="/posters/medal.png"
+        alt="Logo"
+        style={styles.medal}
+        crossOrigin="anonymous"
         />
 
         <div style={styles.bottomBox}>
@@ -210,17 +217,17 @@ const styles = {
   },
 
   msfImage: {
-    width: "350px",
+    width: "300px",
     height: "auto",
     objectFit: "contain",
   },
 
   bottomBox: {
     position: "absolute",
-    bottom: 0,
+    bottom: "10px",
     left: 0,
     width: "100%",
-    height: "70px",
+    height: "30px",
     backgroundColor: "#ffffff",
     display: "flex",
     justifyContent: "center",
@@ -229,9 +236,17 @@ const styles = {
   },
   galaImage: {
     position: "absolute",
-    width: "100px",
-    top: "10px",
+    width: "200px",
+    top: "20px",
     left: "10px",
+    zIndex: 2,
+    display: "block",
+  },
+   medal: {
+    position: "absolute",
+    width: "150px",
+    top: "-10px",
+    right: "10px",
     zIndex: 2,
     display: "block",
   },
